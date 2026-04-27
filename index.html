@@ -1,1 +1,87 @@
+import { useState } from "react";
 
+export default function AdminPanel() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [schemes, setSchemes] = useState([
+    "PM Kisan Yojana 2026 - Apply Now",
+    "UP Scholarship Last Date",
+    "Haryana Labour Card New Benefit",
+  ]);
+
+  const [newScheme, setNewScheme] = useState("");
+
+  const handleLogin = () => {
+    // Simple demo login
+    if (username === "admin" && password === "admin123") {
+      setLoggedIn(true);
+    } else {
+      alert("Invalid credentials");
+    }
+  };
+
+  const addScheme = () => {
+    if (!newScheme.trim()) return;
+    setSchemes([...schemes, newScheme]);
+    setNewScheme("");
+  };
+
+  const deleteScheme = (index) => {
+    const updated = schemes.filter((_, i) => i !== index);
+    setSchemes(updated);
+  };
+
+  if (!loggedIn) {
+    return (
+      <div style={{ padding: 20 }}>
+        <h2>Admin Login</h2>
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <br />
+        <input
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <br />
+        <button onClick={handleLogin}>Login</button>
+        <p>Default: admin / admin123</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Simple Schemes Admin Panel</h2>
+
+      <input
+        placeholder="Add new scheme"
+        value={newScheme}
+        onChange={(e) => setNewScheme(e.target.value)}
+      />
+      <button onClick={addScheme}>Add</button>
+
+      <hr />
+
+      <ul>
+        {schemes.map((scheme, index) => (
+          <li key={index} style={{ marginBottom: 10 }}>
+            {scheme}
+            <button
+              onClick={() => deleteScheme(index)}
+              style={{ marginLeft: 10 }}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
